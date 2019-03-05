@@ -1,0 +1,10 @@
+{
+  "name": "fetsh",
+  "version": "0.1.0",
+  "description": "Simple fetch interface with routes contracts",
+  "main": "index.js",
+  "repository": "https://www.github.com/arthur-feral/fetsh",
+  "author": "Arthur feral (arthur.feral@hotmail.fr)",
+  "license": "MIT",
+  "private": false
+}
