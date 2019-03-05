@@ -6,5 +6,37 @@
   "repository": "https://www.github.com/arthur-feral/fetsh",
   "author": "Arthur feral (arthur.feral@hotmail.fr)",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "scripts": {
+    "lint:js": "eslint ./*.js --ignore-path jest.config.js",
+    "test:js": "jest --detectOpenHandles",
+    "test": "yarn run lint:js && yarn run test:js",
+    "build": "./node_modules/.bin/babel . --out-dir dist --ignore tests,node_modules,dist,**/*.test.js",
+    "prepublish": "yarn run build"
+  },
+  "dependencies": {
+    "fetch-http-service": "^0.2.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.3.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.3.1",
+    "@babel/plugin-transform-async-to-generator": "^7.2.0",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-eslint": "^8.2.3",
+    "babel-jest": "^24.1.0",
+    "babel-plugin-inline-import": "^3.0.0",
+    "eslint": "^5.14.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.12.4",
+    "fetch-mock": "^6.3.0",
+    "jest": "^24.1.0",
+    "sinon": "4.5.0"
+  }
 }
