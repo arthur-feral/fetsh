@@ -6,9 +6,12 @@ module.exports = {
   ],
   testEnvironment: 'jsdom',
   testRegex: [
-    '\\.test\\.js$',
+    '\\.(test|spec)\\.ts$',
   ],
   transform: {
-    '^.+\\.js$': 'babel-jest',
+    '^.+\\.ts$': 'ts-jest',
+  },
+  moduleNameMapper: {
+    '\\.(s?css)$': 'identity-obj-proxy',
   },
 };
