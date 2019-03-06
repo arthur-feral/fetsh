@@ -1,6 +1,4 @@
 .idea
-.babelrc
-.eslintignore
-.eslintrc
 .gitignore
 jest.config.js
+tsconfig.json
