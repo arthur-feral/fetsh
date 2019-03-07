@@ -3,6 +3,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "target": "ES5",
+    "allowJs": true,
     "module": "ES6",
     "moduleResolution": "Node",
     "noEmitOnError": true,
@@ -36,6 +37,7 @@
     "lib/**/*"
   ],
   "exclude": [
+    "dist/",
     "node_modules",
     "**/*.test.ts"
   ]
