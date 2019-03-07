@@ -1,15 +1,14 @@
-// @see https://jestjs.io/docs/en/configuration.html
-
 module.exports = {
   roots: [
-    '<rootDir>',
+    '<rootDir>/lib',
   ],
   testEnvironment: 'node',
   testRegex: [
-    '\\.(test|spec)\\.[jt]sx?$',
+    '\\.(test|spec)\\.[jt]s$',
   ],
   transform: {
-    '^.+\\.[jt]sx?$': 'ts-jest',
+    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.js$': 'babel-jest',
   },
   moduleFileExtensions: [
     'ts',

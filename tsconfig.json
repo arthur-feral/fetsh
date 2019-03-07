@@ -3,7 +3,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "target": "ES5",
-    "allowJs": true,
+    "allowJs": false,
     "module": "ES6",
     "moduleResolution": "Node",
     "noEmitOnError": true,
