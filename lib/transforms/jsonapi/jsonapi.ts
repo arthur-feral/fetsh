@@ -8,35 +8,35 @@ import isUndefined from 'lodash/isUndefined';
 import map from 'lodash/map';
 
 interface JsonApiObject {
-  id: string,
-  type: string,
-  attributes: object
-  relationships?: object
+  id: string;
+  type: string;
+  attributes: object;
+  relationships?: object;
 }
 
 interface JsonApiObjectHashMap {
-  [id: string]: JsonApiObject
+  [id: string]: JsonApiObject;
 }
 
 interface ConvertersOption {
-  [index: string]: any
+  [index: string]: any;
 }
 
 interface JsonApiPayload {
-  data: JsonApiObject,
-  included: JsonApiObject[],
+  data: JsonApiObject;
+  included: JsonApiObject[];
 }
 
 interface JsonApiArrayPayload {
-  data: JsonApiObject[],
-  included: JsonApiObject[],
+  data: JsonApiObject[];
+  included: JsonApiObject[];
 }
 
 const defaultConverter = (entity: JsonApiObject) => entity;
 
 export default (jsonApiPayload: JsonApiPayload | JsonApiArrayPayload, converters: ConvertersOption | null) => {
-  let entitiesStore: {
-    [type: string]: JsonApiObjectHashMap
+  const entitiesStore: {
+    [type: string]: JsonApiObjectHashMap,
   } = {};
 
   // Handle the 204 no content situation
@@ -65,7 +65,8 @@ export default (jsonApiPayload: JsonApiPayload | JsonApiArrayPayload, converters
       ...entity.attributes,
       ...mapValues(entity.relationships, (relation: any) => {
         if (isArray(relation.data)) {
-          return reduce(relation.data,
+          return reduce(
+            relation.data,
             (relatedEntities: any[], relatedEntity) => {
               let entityFromStore = get(entitiesStore, `[${relatedEntity.type}][${relatedEntity.id}]`);
               if (isUndefined(entityFromStore)) {
@@ -75,7 +76,8 @@ export default (jsonApiPayload: JsonApiPayload | JsonApiArrayPayload, converters
               relatedEntities.push(entityFromStore);
               return relatedEntities;
             },
-            []);
+            [],
+          );
         }
         const entityFromStore = get(entitiesStore, `[${relation.data.type}][${relation.data.id}]`);
         if (isUndefined(entityFromStore)) {
@@ -95,4 +97,3 @@ export default (jsonApiPayload: JsonApiPayload | JsonApiArrayPayload, converters
   const payloadData: JsonApiObject = jsonApiPayload.data as JsonApiObject;
   return entitiesStore[payloadData.type][payloadData.id];
 };
-
