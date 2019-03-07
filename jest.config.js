@@ -18,6 +18,6 @@ module.exports = {
     'node',
   ],
   coveragePathIgnorePatterns: [
-    '<rootDir>/dist/',
+    '<rootDir>/dist',
   ],
 };
