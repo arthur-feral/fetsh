@@ -1,0 +1,15 @@
+[
+  {
+    "author": {
+      "age": 80,
+      "gender": "male",
+      "id": "42",
+      "name": "John"
+    },
+    "body": "The shortest article. Ever.",
+    "created": "2015-05-22T14:56:29.000Z",
+    "id": "1",
+    "title": "JSON:API paints my bikeshed!",
+    "updated": "2015-05-22T14:56:28.000Z"
+  }
+]

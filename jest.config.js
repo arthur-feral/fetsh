@@ -4,14 +4,20 @@ module.exports = {
   roots: [
     '<rootDir>',
   ],
-  testEnvironment: 'jsdom',
+  testEnvironment: 'node',
   testRegex: [
-    '\\.(test|spec)\\.ts$',
+    '\\.(test|spec)\\.[jt]sx?$',
   ],
   transform: {
-    '^.+\\.ts$': 'ts-jest',
+    '^.+\\.[jt]sx?$': 'ts-jest',
   },
-  moduleNameMapper: {
-    '\\.(s?css)$': 'identity-obj-proxy',
-  },
+  moduleFileExtensions: [
+    'ts',
+    'js',
+    'json',
+    'node',
+  ],
+  coveragePathIgnorePatterns: [
+    '<rootDir>/dist/',
+  ],
 };

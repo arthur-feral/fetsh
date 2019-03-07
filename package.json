@@ -15,7 +15,8 @@
     "prepublish": "yarn run build"
   },
   "dependencies": {
-    "fetch-http-service": "^0.2.1"
+    "fetch-http-service": "^0.2.1",
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "@types/jest": "^24.0.9",
