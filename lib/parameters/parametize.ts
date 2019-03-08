@@ -1,18 +1,18 @@
 import reduce from 'lodash/reduce';
 
-export interface Parameter {
+export interface Parameters {
   [name: string]: any;
 }
 
 export interface ParametizerContent {
-  [name: string]: Parameter;
+  [name: string]: Parameters;
 }
 
-export interface Parameters {
+export interface FetchParameters {
   [name: string]: ParametizerContent;
 }
 
-export default (...parametizerContents: ParametizerContent[]): Parameters => {
+export default (...parametizerContents: ParametizerContent[]): FetchParameters => {
   return reduce(
     parametizerContents,
     (result, parametizerContent) => ({

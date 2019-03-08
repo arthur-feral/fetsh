@@ -1,4 +1,4 @@
-export const URL_VARIABLE_REGEXP: RegExp = /\%\{([a-zA-Z0-9-_]+)\}/g;
+export const URL_VARIABLE_REGEXP: RegExp = /\$\{([a-zA-Z0-9-_]+)\}/g;
 export const NOT_FOUND_ERROR = 'Resource not found';
 export const ABORT_ERROR = 'Request has been aborted';
 export const SERVER_ERROR = 'The server responded with an error';

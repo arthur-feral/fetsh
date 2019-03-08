@@ -1,6 +1,6 @@
-import { Parameter, ParametizerContent } from '../parametize';
+import { Parameters, ParametizerContent } from '../parametize';
 
-export default (parameters: Parameter): ParametizerContent => {
+export default (parameters: Parameters): ParametizerContent => {
   if (!parameters) {
     throw new Error('parametize query cannot take undefined or null argument');
   }
