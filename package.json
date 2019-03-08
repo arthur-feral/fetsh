@@ -6,8 +6,8 @@
   "author": "Arthur feral (arthur.feral@hotmail.fr)",
   "license": "MIT",
   "private": false,
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint:js": "tslint -c ./tslint.json -p ./tsconfig.json -t stylish",
     "test:js": "jest --detectOpenHandles",
@@ -18,7 +18,6 @@
     "preversion": "yarn run lint:js"
   },
   "dependencies": {
-    "fetch-http-service": "^0.2.1",
     "lodash": "^4.17.11"
   },
   "devDependencies": {
