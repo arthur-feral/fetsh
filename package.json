@@ -18,7 +18,10 @@
     "preversion": "yarn run lint:js"
   },
   "dependencies": {
-    "lodash": "^4.17.11"
+    "lodash": "^4.17.11",
+    "query-string": "^6.3.0",
+    "url": "^0.11.0",
+    "whatwg-fetch": "^3.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",

@@ -1,18 +1,70 @@
+import {
+  parse as parseUrl,
+} from 'url';
+import queryString from 'query-string';
+import reduce from 'lodash/reduce';
 import omit from 'lodash/omit';
 import size from 'lodash/size';
 import has from 'lodash/has';
 import {
   URL_VARIABLE_REGEXP,
 } from './constants';
+import { Parameters } from './parameters/parametize';
 
-interface UrlParameters {
+export interface UrlParameters extends Parameters {
   [name: string]: any;
 }
 
-export default (
+export interface QueryParameters extends Parameters {
+  [name: string]: any;
+}
+
+export const prepareQueryParameters = (queryParameters: QueryParameters = {}): string => {
+  if (!queryParameters) {
+    throw new Error(`Invalid query parameters: expected an object, got ${queryParameters}`);
+  }
+
+  return queryString.stringify(
+    reduce(
+      queryParameters,
+      (result, value: any, param) => ({
+        ...result,
+        [param]: Array.isArray(value) ? value.join(',') : value,
+      }),
+      {},
+    ),
+  );
+};
+
+export const applyUrlQueryParameters = (url: string, queryParameters: QueryParameters = {}): string => {
+  const parsedUrl = parseUrl(url);
+
+  if (Object.keys(queryParameters).length === 0) {
+    return url;
+  }
+
+  let result = url;
+
+  const urlQueryParameters = queryString.parse(parsedUrl.query || '');
+  if (Object.keys(urlQueryParameters).length === 0) {
+    if (url.indexOf('?') === -1) {
+      result = `${result}?`;
+    }
+  }
+
+  if (Object.keys(urlQueryParameters).length !== 0) {
+    result = `${result}&`;
+  }
+
+  result += prepareQueryParameters(queryParameters);
+
+  return result;
+};
+
+export const applyUrlParameters = (
   url: string,
   urlVariables: UrlParameters,
-) => {
+): string => {
   let matches;
   let urlVariablesClone = {
     ...urlVariables,
@@ -41,4 +93,14 @@ export default (
   }
 
   return finalUrl;
+};
+
+export default (url: string, urlParameters: UrlParameters, queryParameters: QueryParameters): string => {
+  return applyUrlQueryParameters(
+    applyUrlParameters(
+      url,
+      urlParameters,
+    ),
+    queryParameters,
+  );
 };
