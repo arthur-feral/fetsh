@@ -8,6 +8,7 @@
     "moduleResolution": "Node",
     "noEmitOnError": true,
     "esModuleInterop": true,
+    "declaration": true,
     "strict": true,
     "sourceMap": false,
     "allowSyntheticDefaultImports": true,
@@ -39,6 +40,7 @@
   "exclude": [
     "dist/",
     "node_modules",
-    "**/*.test.ts"
+    "**/*.test.ts",
+    "**/*.test.js"
   ]
 }
