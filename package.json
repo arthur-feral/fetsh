@@ -2,17 +2,20 @@
   "name": "fetsh",
   "version": "0.1.0",
   "description": "Simple fetch interface with routes contracts",
-  "main": "index.js",
   "repository": "https://www.github.com/arthur-feral/fetsh",
   "author": "Arthur feral (arthur.feral@hotmail.fr)",
   "license": "MIT",
   "private": false,
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "lint:ts": "tslint -c ./tslint.json -p ./tsconfig.json -t stylish",
-    "test:ts": "jest --detectOpenHandles",
-    "test": "yarn run lint:ts && yarn run test:ts",
+    "lint:js": "tslint -c ./tslint.json -p ./tsconfig.json -t stylish",
+    "test:js": "jest --detectOpenHandles",
+    "test": "yarn run lint:js && yarn run test:js",
     "build": "./node_modules/.bin/tsc",
-    "prepublish": "yarn run build"
+    "prepare": "yarn run build",
+    "prepublishOnly": "yarn run test",
+    "preversion": "yarn run lint:js"
   },
   "dependencies": {
     "fetch-http-service": "^0.2.1",
@@ -32,5 +35,14 @@
     "tslint": "^5.13.1",
     "tslint-config-airbnb": "^5.11.1",
     "typescript": "^3.3.3333"
-  }
+  },
+  "keywords": [
+    "fetch",
+    "fetsh",
+    "http",
+    "contracts"
+  ],
+  "files": [
+    "lib/**/*"
+  ]
 }
