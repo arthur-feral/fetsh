@@ -5,7 +5,7 @@ import {
   AUTH_ERROR,
   PARSING_ERROR,
   NETWORK_ERROR,
-  CORS_ERROR,
+  CORS_ERROR, ABORT_ERROR,
 } from './constants';
 
 interface Body {
@@ -16,7 +16,7 @@ export class FetchError extends Error {
   body: Body;
   name: string;
 
-  constructor(body: Body, message: string) {
+  constructor(body: Body = {}, message: string = '') {
     super(message);
 
     this.body = body;
@@ -25,7 +25,7 @@ export class FetchError extends Error {
 }
 
 export class NotFoundError extends FetchError {
-  constructor(body: Body) {
+  constructor(body: Body | undefined = {}) {
     super(body, NOT_FOUND_ERROR);
 
     this.name = 'NotFoundError';
@@ -33,7 +33,7 @@ export class NotFoundError extends FetchError {
 }
 
 export class ServerError extends FetchError {
-  constructor(body: Body) {
+  constructor(body: Body | undefined = {}) {
     super(body, SERVER_ERROR);
 
     this.name = 'ServerError';
@@ -41,7 +41,7 @@ export class ServerError extends FetchError {
 }
 
 export class BadParamsError extends FetchError {
-  constructor(body: Body) {
+  constructor(body: Body | undefined = {}) {
     super(body, BAD_PARAMS_ERROR);
 
     this.name = 'BadParamsError';
@@ -49,7 +49,7 @@ export class BadParamsError extends FetchError {
 }
 
 export class AuthError extends FetchError {
-  constructor(body: Body) {
+  constructor(body: Body | undefined = {}) {
     super(body, AUTH_ERROR);
 
     this.name = 'AuthError';
@@ -57,7 +57,7 @@ export class AuthError extends FetchError {
 }
 
 export class ParsingError extends FetchError {
-  constructor(body: Body) {
+  constructor(body: Body | undefined = {}) {
     super(body, PARSING_ERROR);
 
     this.name = 'ParsingError';
@@ -65,15 +65,23 @@ export class ParsingError extends FetchError {
 }
 
 export class CorsError extends FetchError {
-  constructor(body: Body) {
+  constructor(body: Body | undefined = {}) {
     super(body, CORS_ERROR);
 
     this.name = 'CorsError';
   }
 }
 
+export class AbortError extends FetchError {
+  constructor(body: Body | undefined = {}) {
+    super(body, ABORT_ERROR);
+
+    this.name = 'AbortError';
+  }
+}
+
 export class NetworkError extends FetchError {
-  constructor(body: Body) {
+  constructor(body: Body | undefined = {}) {
     super(body, NETWORK_ERROR);
 
     this.name = 'NetworkError';
