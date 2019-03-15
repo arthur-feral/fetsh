@@ -7,3 +7,14 @@ export const AUTH_ERROR = 'You don\'t have the permission to access the resource
 export const PARSING_ERROR = 'Error while parsing response';
 export const CORS_ERROR = 'Error with CORS configuration';
 export const NETWORK_ERROR = 'Network seems unreachable';
+export const VERBS = [
+  'get',
+  'post',
+  'patch',
+  'put',
+  'delete',
+];
+export const CONTENT_JSON = 'application/json';
+export const CONTENT_JSONAPI = 'application/vnd.api+json';
+export const LOG_INFO_PREFIX = '[fetsh][Info]';
+export const LOG_ERROR_PREFIX = '[fetsh][Error]';

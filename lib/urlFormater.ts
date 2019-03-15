@@ -1,13 +1,15 @@
 import queryString from 'query-string';
 import reduce from 'lodash/reduce';
 import { parse as parseUrl } from 'url';
-import { QueryParameters, UrlParameters } from './types';
+import { RequestParameters } from './types';
 import { URL_VARIABLE_REGEXP } from './constants';
 import has from 'lodash/has';
 import omit from 'lodash/omit';
 import size from 'lodash/size';
-import { getUrlParameters } from './parameters/parametizeUrl/parametizeUrl';
-import { getQueryParameters } from './parameters/parametizeQuery/parametizeQuery';
+import {
+  getUrlParameters,
+  getQueryParameters,
+} from './parameters/parametize';
 
 export const prepareQueryParameters = (queryParameters: object = {}): string => {
   if (typeof queryParameters !== 'object') {
@@ -87,12 +89,12 @@ export const applyUrlParameters = (
   return finalUrl;
 };
 
-export default (url: string, urlParameters: UrlParameters, queryParameters: QueryParameters): string => {
+export default (url: string, requestParameters: RequestParameters): string => {
   return applyUrlQueryParameters(
     applyUrlParameters(
       url,
-      getUrlParameters(urlParameters),
+      getUrlParameters(requestParameters),
     ),
-    getQueryParameters(queryParameters),
+    getQueryParameters(requestParameters),
   );
 };

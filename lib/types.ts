@@ -13,3 +13,7 @@ export type RequestParameters = Opaque<'RequestParameters'>;
 export type ParametizeParameters = UrlParameters | QueryParameters | BodyParameters | FetchParameters;
 
 export type RequestResponse = Opaque<'RequestResponse'>;
+
+export type UrlContract = Opaque<'UrlContract'>;
+
+export type Adapter = (payload: object) => RequestResponse;
