@@ -7,16 +7,15 @@ import {
   NETWORK_ERROR,
   CORS_ERROR, ABORT_ERROR,
 } from './constants';
-
-interface Body {
-  [key: string]: any;
-}
+import {
+  RequestResponse,
+} from './types';
 
 export class FetchError extends Error {
-  body: Body;
+  body: RequestResponse;
   name: string;
 
-  constructor(body: Body = {}, message: string = '') {
+  constructor(body: RequestResponse, message: string = '') {
     super(message);
 
     this.body = body;
@@ -25,7 +24,7 @@ export class FetchError extends Error {
 }
 
 export class NotFoundError extends FetchError {
-  constructor(body: Body | undefined = {}) {
+  constructor(body: RequestResponse) {
     super(body, NOT_FOUND_ERROR);
 
     this.name = 'NotFoundError';
@@ -33,7 +32,7 @@ export class NotFoundError extends FetchError {
 }
 
 export class ServerError extends FetchError {
-  constructor(body: Body | undefined = {}) {
+  constructor(body: RequestResponse) {
     super(body, SERVER_ERROR);
 
     this.name = 'ServerError';
@@ -41,7 +40,7 @@ export class ServerError extends FetchError {
 }
 
 export class BadParamsError extends FetchError {
-  constructor(body: Body | undefined = {}) {
+  constructor(body: RequestResponse) {
     super(body, BAD_PARAMS_ERROR);
 
     this.name = 'BadParamsError';
@@ -49,7 +48,7 @@ export class BadParamsError extends FetchError {
 }
 
 export class AuthError extends FetchError {
-  constructor(body: Body | undefined = {}) {
+  constructor(body: RequestResponse) {
     super(body, AUTH_ERROR);
 
     this.name = 'AuthError';
@@ -57,7 +56,7 @@ export class AuthError extends FetchError {
 }
 
 export class ParsingError extends FetchError {
-  constructor(body: Body | undefined = {}) {
+  constructor(body: RequestResponse) {
     super(body, PARSING_ERROR);
 
     this.name = 'ParsingError';
@@ -65,7 +64,7 @@ export class ParsingError extends FetchError {
 }
 
 export class CorsError extends FetchError {
-  constructor(body: Body | undefined = {}) {
+  constructor(body: RequestResponse) {
     super(body, CORS_ERROR);
 
     this.name = 'CorsError';
@@ -73,7 +72,7 @@ export class CorsError extends FetchError {
 }
 
 export class AbortError extends FetchError {
-  constructor(body: Body | undefined = {}) {
+  constructor(body: RequestResponse) {
     super(body, ABORT_ERROR);
 
     this.name = 'AbortError';
@@ -81,9 +80,37 @@ export class AbortError extends FetchError {
 }
 
 export class NetworkError extends FetchError {
-  constructor(body: Body | undefined = {}) {
+  constructor(body: RequestResponse) {
     super(body, NETWORK_ERROR);
 
     this.name = 'NetworkError';
   }
 }
+
+export const getErrorWithStatus = (body: RequestResponse, status: number, type: string = ''): FetchError => {
+  switch (status) {
+    case 400:
+      return new BadParamsError(body);
+    case 401:
+    case 403:
+      return new AuthError(body);
+
+    case 404:
+      return new NotFoundError(body);
+
+    case 0: {
+      if (type === 'opaque') {
+        return new CorsError(body);
+      }
+
+      if (type === 'error') {
+        return new NetworkError(body);
+      }
+
+      return new ServerError(body);
+    }
+
+    default:
+      return new ServerError(body);
+  }
+};

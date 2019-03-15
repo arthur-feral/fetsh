@@ -7,12 +7,6 @@ type $UrlParameters = UrlParameters & {
   urlParameters: object;
 };
 
-export const getUrlParameters = (urlParameters: UrlParameters): object => {
-  const parameters = urlParameters as $UrlParameters;
-
-  return parameters.urlParameters;
-};
-
 export default (urlParameters: object = {}): UrlParameters => {
   if (!isPlainObject(urlParameters)) {
     throw new Error('parameter urlParameters must be an object');
