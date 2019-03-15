@@ -1,24 +1,27 @@
 import reduce from 'lodash/reduce';
+import {
+  BodyParameters,
+  FetchParameters,
+  ParametizeParameters,
+  QueryParameters,
+  RequestParameters,
+  UrlParameters,
+} from '../types';
 
-export interface Parameters {
-  [name: string]: any;
-}
+type $RequestParameters = RequestParameters & {
+  url?: UrlParameters;
+  query?: QueryParameters;
+  body?: BodyParameters;
+  fetch?: FetchParameters;
+};
 
-export interface ParametizerContent {
-  [name: string]: Parameters;
-}
-
-export interface FetchParameters {
-  [name: string]: ParametizerContent;
-}
-
-export default (...parametizerContents: ParametizerContent[]): FetchParameters => {
+export default (...parametizeParameters: ParametizeParameters[]): RequestParameters => {
   return reduce(
-    parametizerContents,
-    (result, parametizerContent) => ({
+    parametizeParameters,
+    (result, parametizeParameter) => ({
       ...result,
-      ...parametizerContent,
+      ...parametizeParameter,
     }),
     {},
-  );
+  ) as $RequestParameters;
 };

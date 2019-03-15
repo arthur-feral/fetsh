@@ -1,11 +1,24 @@
-import { Parameters, ParametizerContent } from '../parametize';
+import isPlainObject from 'lodash/isPlainObject';
+import {
+  UrlParameters,
+} from '../../types';
 
-export default (parameters: Parameters): ParametizerContent => {
-  if (!parameters) {
-    throw new Error('parametize url cannot take undefined or null argument');
+type $UrlParameters = UrlParameters & {
+  urlParameters: object;
+};
+
+export const getUrlParameters = (urlParameters: UrlParameters): object => {
+  const parameters = urlParameters as $UrlParameters;
+
+  return parameters.urlParameters;
+};
+
+export default (urlParameters: object = {}): UrlParameters => {
+  if (!isPlainObject(urlParameters)) {
+    throw new Error('parameter urlParameters must be an object');
   }
 
   return {
-    url: parameters,
-  };
+    urlParameters,
+  } as $UrlParameters;
 };

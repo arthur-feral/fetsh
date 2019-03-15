@@ -1,26 +1,16 @@
-import {
-  parse as parseUrl,
-} from 'url';
 import queryString from 'query-string';
 import reduce from 'lodash/reduce';
+import { parse as parseUrl } from 'url';
+import { QueryParameters, UrlParameters } from './types';
+import { URL_VARIABLE_REGEXP } from './constants';
+import has from 'lodash/has';
 import omit from 'lodash/omit';
 import size from 'lodash/size';
-import has from 'lodash/has';
-import {
-  URL_VARIABLE_REGEXP,
-} from './constants';
-import { Parameters } from './parameters/parametize';
+import { getUrlParameters } from './parameters/parametizeUrl/parametizeUrl';
+import { getQueryParameters } from './parameters/parametizeQuery/parametizeQuery';
 
-export interface UrlParameters extends Parameters {
-  [name: string]: any;
-}
-
-export interface QueryParameters extends Parameters {
-  [name: string]: any;
-}
-
-export const prepareQueryParameters = (queryParameters: QueryParameters = {}): string => {
-  if (!queryParameters) {
+export const prepareQueryParameters = (queryParameters: object = {}): string => {
+  if (typeof queryParameters !== 'object') {
     throw new Error(`Invalid query parameters: expected an object, got ${queryParameters}`);
   }
 
@@ -36,7 +26,7 @@ export const prepareQueryParameters = (queryParameters: QueryParameters = {}): s
   );
 };
 
-export const applyUrlQueryParameters = (url: string, queryParameters: QueryParameters = {}): string => {
+export const applyUrlQueryParameters = (url: string, queryParameters: object = {}): string => {
   const parsedUrl = parseUrl(url);
 
   if (Object.keys(queryParameters).length === 0) {
@@ -63,10 +53,12 @@ export const applyUrlQueryParameters = (url: string, queryParameters: QueryParam
 
 export const applyUrlParameters = (
   url: string,
-  urlVariables: UrlParameters,
+  urlVariables: object,
 ): string => {
   let matches;
-  let urlVariablesClone = {
+  let urlVariablesClone: {
+    [index: string]: any;
+  } = {
     ...urlVariables,
   };
   let finalUrl = url;
@@ -99,8 +91,8 @@ export default (url: string, urlParameters: UrlParameters, queryParameters: Quer
   return applyUrlQueryParameters(
     applyUrlParameters(
       url,
-      urlParameters,
+      getUrlParameters(urlParameters),
     ),
-    queryParameters,
+    getQueryParameters(queryParameters),
   );
 };

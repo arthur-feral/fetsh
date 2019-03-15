@@ -3,6 +3,7 @@ import urlFormater, {
   applyUrlParameters,
   applyUrlQueryParameters,
 } from './urlFormater';
+import { parametizeQuery, parametizeUrl } from './parameters';
 
 describe('urlFormater', () => {
   describe('prepareQueryParameters', () => {
@@ -160,17 +161,17 @@ describe('urlFormater', () => {
       expect(
         urlFormater(
           'https://www.domain.ext/${domain}/${resourceName}/${resourceId}?name1=value1',
-          {
+          parametizeUrl({
             domain: 'theDomain',
             resourceName: 'theResourceName',
             resourceId: 'theResourceId',
-          },
-          {
+          }),
+          parametizeQuery({
             name2: 'value2',
             array1: [
               1, 2, 3,
             ],
-          },
+          }),
         ),
       ).toEqual(
         'https://www.domain.ext/theDomain/theResourceName/theResourceId?name1=value1&array1=1%2C2%2C3&name2=value2',
