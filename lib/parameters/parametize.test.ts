@@ -14,7 +14,7 @@ describe('parametize', () => {
         }),
       ),
     ).toEqual({
-      url: {
+      urlParameters: {
         name: 'url',
       },
       query: {
