@@ -72,3 +72,118 @@ get(GET_MOVIES_FROM_JSON_API).then((movies: array[any]) => {
 By simply doing this, you can deal with many different REST API endpoints that may return data with different shape,
 by establish a contract in your routing file. 
 This way is more readable, all your API call are defined in a single file, and you can easily see how the data is transformed.
+
+### How to use
+For all available http methods you will have to provide an UrlContract. You can also provide parameters depending on the need.
+
+#### parametise
+This helper will help you creating your request. Depending on what you are parametizing, it can throw errors to help you debugging code.
+
+
+**parametizeUrl**: when you define your contract, you provide an url. This url may need to add an id in the url path.
+For example you wanna fetch a specific resource with its ID: the url would looks like `https://api.domain.com/movies/12345`.
+You just have to surround any variable like this: `${variable}` 
+Using this helper, you will be protected from bad parameters and instead of querying `https://api.domain.com/movies/undefined`, it will throw an error on runtime telling you that one parameter is missing.
+```Typescript
+// routing.js
+import {
+  createUrlContract,
+} from 'fetsh';
+
+// you will define your contract like this
+const GET_MOVIE = createUrlContract({
+  url: 'https://api.domain.com/movies/${id}'
+});
+
+
+// app.js
+import {
+  get,
+  parametize,
+  parametizeUrl,
+} from 'fetsh';
+import {
+  GET_MOVIE,
+} from './routing.js'
+
+// declare your url parameters
+const urlParameters = parametizeUrl({
+  id: 12345,
+});
+
+// request the server
+get(GET_MOVIE, parametize(urlParameters));
+```
+
+**parametizeQuery**: Your url may also need query params, here is how to add some:
+```Typescript
+// routing.js
+import {
+  createUrlContract,
+} from 'fetsh';
+
+// you will define your contract like this
+const GET_MOVIE = createUrlContract({
+  url: 'https://api.domain.com/movies/${id}'
+});
+
+
+// app.js
+import {
+  get,
+  parametize,
+  parametizeUrl,
+  parametizeQuery,
+} from 'fetsh';
+import {
+  GET_MOVIE,
+} from './routing.js'
+
+// declare your url parameters
+const urlParameters = parametizeUrl({
+  id: 12345,
+});
+// declare your url query parameters
+const queryParameters = parametizeQuery({
+  rating: 5,
+});
+
+// request the server
+get(GET_MOVIE, parametize(urlParameters, queryParameters));
+```
+and you will request `https://api.domain.com/movies/12345?rating=5`
+
+**parametizeBody**: Use this helper if you wanna post data to the server
+```Typescript
+// routing.js
+import {
+  createUrlContract,
+} from 'fetsh';
+
+// you will define your contract like this
+const CREATE_MOVIE = createUrlContract({
+  url: 'https://api.domain.com/movies'
+});
+
+
+// app.js
+import {
+  post,
+  parametize,
+  parametizeBody,
+} from 'fetsh';
+import {
+  CREATE_MOVIE,
+} from './routing.js'
+
+// declare your url parameters
+const body = parametizeBody({
+  name: 'Interstellar',
+  rating: 5
+});
+
+// request the server
+post(CREATE_MOVIE, parametize(body));
+```
+
+**parametizeFetch**: Use this helper if you wanna add custom fetch options like headers etc.

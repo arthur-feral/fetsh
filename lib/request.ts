@@ -14,7 +14,7 @@ import {
   RequestResponse,
   RequestParameters,
 } from './types';
-import { getFetchParameters } from './parameters/parametize';
+import { getDefaultRequestParameters, getFetchParameters } from './parameters/parametize';
 
 type $RequestResponse = RequestResponse & {
   [index: string]: any;
@@ -136,7 +136,7 @@ const request = (verb: string, url: string, adapter: Adapter, requestParameters:
   return requestPromise;
 };
 
-const prepareRequest = (verb: string, urlContract: UrlContract, requestParameters: RequestParameters): Promise<any> => {
+const prepareRequest = (verb: string, urlContract: UrlContract, requestParameters?: RequestParameters): Promise<any> => {
   if (!verb || typeof verb !== 'string') {
     throw new Error(`${LOG_ERROR_PREFIX} HTTP method is incorrect, got ${typeof verb}`);
   }
@@ -149,11 +149,14 @@ const prepareRequest = (verb: string, urlContract: UrlContract, requestParameter
     throw new Error(`${LOG_ERROR_PREFIX} Missing parameter url`);
   }
 
+  const parameters = requestParameters ?
+    requestParameters :
+    getDefaultRequestParameters();
   const urlRaw = getUrlFromContract(urlContract);
   const adapter = getAdapterFromContract(urlContract);
-  const url = urlFormater(urlRaw, requestParameters);
+  const url = urlFormater(urlRaw, parameters);
 
-  return request(verb, url, adapter, requestParameters);
+  return request(verb, url, adapter, parameters);
 };
 
 export const createRequestResponse = (response: object = {}): RequestResponse => {

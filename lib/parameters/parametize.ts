@@ -15,6 +15,15 @@ type $RequestParameters = RequestParameters & {
   fetch: FetchParameters;
 };
 
+export const getDefaultRequestParameters = (): RequestParameters => {
+  return {
+    urlParameters: {},
+    query: {},
+    body: {},
+    fetch: {},
+  } as $RequestParameters;
+};
+
 export const getUrlParameters = (requestParameters: RequestParameters): UrlParameters => {
   const parameters = requestParameters as $RequestParameters;
 
