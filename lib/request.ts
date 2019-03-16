@@ -1,4 +1,4 @@
-// import noop from 'lodash/noop';
+import 'whatwg-fetch';
 import get from 'lodash/get';
 import urlFormater from './urlFormater';
 import {
@@ -35,7 +35,14 @@ const getUrlFromContract = (urlContract: UrlContract | string): string => {
   return contract.url;
 };
 
-const request = (verb: string, url: string, requestParameters: RequestParameters): Promise<RequestResponse> => {
+const getAdapterFromContract = (urlContract: UrlContract | string): Adapter => {
+  const contract = urlContract as $UrlContract;
+
+  return contract.adapter || (response => response) as Adapter;
+};
+
+const request = (verb: string, url: string, adapter: Adapter, requestParameters: RequestParameters): Promise<any> => {
+  const method = verb.toUpperCase();
   // const abortAvailable = window.AbortController !== undefined;
   // let abortController;
   // let signal;
@@ -56,7 +63,7 @@ const request = (verb: string, url: string, requestParameters: RequestParameters
 
   let options: any = {
     headers,
-    method: verb,
+    method,
     mode: 'no-cors',
     credentials: 'omit',
   };
@@ -77,7 +84,7 @@ const request = (verb: string, url: string, requestParameters: RequestParameters
     }
   }
 
-  if (['GET', 'DELETE'].indexOf(verb) === -1) {
+  if (['GET', 'DELETE'].indexOf(method) === -1) {
     const body = get(requestParameters, 'body', {});
     options.body = JSON.stringify(body);
   }
@@ -93,10 +100,18 @@ const request = (verb: string, url: string, requestParameters: RequestParameters
   ).then((response: any) => {
     const buildResult = (body: any) => [body, response.ok, response.status, response.type];
 
-    if ([CONTENT_JSON, CONTENT_JSONAPI].includes(response.headers.get('Content-Type'))) {
+    if (
+      response.headers
+      && response.headers.get('Content-Type')
+      && [CONTENT_JSON, CONTENT_JSONAPI].includes(response.headers.get('Content-Type'))
+    ) {
       return response.json().then(buildResult);
     }
-    if (response.headers.get('Content-Type').indexOf('text') !== -1) {
+    if (
+      response.headers
+      && response.headers.get('Content-Type')
+      && response.headers.get('Content-Type').indexOf('text') !== -1
+    ) {
       return response.text().then(buildResult);
     }
 
@@ -104,7 +119,7 @@ const request = (verb: string, url: string, requestParameters: RequestParameters
   }).then(([requestResponse, isSuccess, status, type]) => {
     const body = (requestResponse || {}) as $RequestResponse;
     if (isSuccess) {
-      return body;
+      return adapter(body);
     }
 
     throw getErrorWithStatus(
@@ -121,7 +136,7 @@ const request = (verb: string, url: string, requestParameters: RequestParameters
   return requestPromise;
 };
 
-const prepareRequest = (verb: string, urlContract: UrlContract, requestParameters: RequestParameters): Promise<RequestResponse> => {
+const prepareRequest = (verb: string, urlContract: UrlContract, requestParameters: RequestParameters): Promise<any> => {
   if (!verb || typeof verb !== 'string') {
     throw new Error(`${LOG_ERROR_PREFIX} HTTP method is incorrect, got ${typeof verb}`);
   }
@@ -135,9 +150,10 @@ const prepareRequest = (verb: string, urlContract: UrlContract, requestParameter
   }
 
   const urlRaw = getUrlFromContract(urlContract);
+  const adapter = getAdapterFromContract(urlContract);
   const url = urlFormater(urlRaw, requestParameters);
 
-  return request(verb, url, requestParameters);
+  return request(verb, url, adapter, requestParameters);
 };
 
 export const createRequestResponse = (response: object = {}): RequestResponse => {
