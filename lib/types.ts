@@ -16,4 +16,4 @@ export type RequestResponse = Opaque<'RequestResponse'>;
 
 export type UrlContract = Opaque<'UrlContract'>;
 
-export type Adapter = (payload: object) => RequestResponse;
+export type Adapter = (payload: any) => any;

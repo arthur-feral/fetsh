@@ -2,7 +2,7 @@ module.exports = {
   roots: [
     '<rootDir>/lib',
   ],
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   testRegex: [
     '\\.(test|spec)\\.[jt]s$',
   ],
@@ -19,4 +19,5 @@ module.exports = {
   coveragePathIgnorePatterns: [
     '<rootDir>/dist',
   ],
+  automock: false,
 };

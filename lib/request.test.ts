@@ -1,29 +1,34 @@
-import jsdom from 'jsdom';
-
-const { JSDOM } = jsdom;
-const globalAny: any = global;
-
-const doc = new JSDOM(`
-<!doctype html>
-<html>
-    <body></body>
-</html>
-`);
-
-globalAny.window = doc.window;
-
+import { GlobalWithFetchMock } from 'jest-fetch-mock';
 import request, { createUrlFromContract } from './request';
 import {
   parametize,
   parametizeQuery,
 } from './parameters';
+import { CONTENT_JSON } from './constants';
+
+const customGlobal: GlobalWithFetchMock = global as GlobalWithFetchMock;
+customGlobal.fetch = require('jest-fetch-mock');
+customGlobal.fetchMock = customGlobal.fetch;
 
 describe('request', () => {
+  beforeEach(() => {
+    global.fetch.resetMocks();
+  });
   it('should work', async () => {
+    global.fetch.mockResponse(
+      JSON.stringify({ data: '12345' }),
+      {
+        headers: {
+          'Content-Type': CONTENT_JSON,
+        },
+      },
+    );
     const contract = createUrlFromContract({
       url: 'https://httpbin.org/get',
-      adapter: (response: object) => {
-        console.log(response);
+      adapter: (response: any) => {
+        return {
+          data: parseInt(response.data, 10),
+        };
       },
     });
     const parameters = parametize(
@@ -32,6 +37,6 @@ describe('request', () => {
       }),
     );
     const response = await request('get', contract, parameters);
-    expect(response).toEqual({});
+    expect(response.data).toEqual(12345);
   });
 });
