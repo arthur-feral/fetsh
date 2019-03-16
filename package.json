@@ -1,6 +1,6 @@
 {
   "name": "fetsh",
-  "version": "0.2.1",
+  "version": "0.2.1-beta.0",
   "description": "Simple fetch interface with routes contracts",
   "repository": "https://www.github.com/arthur-feral/fetsh",
   "author": "Arthur feral (arthur.feral@hotmail.fr)",
@@ -15,7 +15,8 @@
     "build": "./node_modules/.bin/tsc",
     "prepare": "yarn run build",
     "prepublishOnly": "yarn run test",
-    "preversion": "yarn run lint:js"
+    "preversion": "yarn run lint:js",
+    "clean": "rm -r dist/"
   },
   "dependencies": {
     "lodash": "^4.17.11",
