@@ -187,3 +187,4 @@ post(CREATE_MOVIE, parametize(body));
 ```
 
 **parametizeFetch**: Use this helper if you wanna add custom fetch options like headers etc.
+The parameters are the same than for fetch, plus 2 extra options: `isCrowwDomain` and `useCredentials`.

@@ -1,6 +1,6 @@
 {
   "name": "fetsh",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Simple fetch interface with routes contracts",
   "repository": "https://www.github.com/arthur-feral/fetsh",
   "author": "Arthur feral (arthur.feral@hotmail.fr)",
@@ -11,11 +11,12 @@
   "scripts": {
     "lint:js": "tslint -c ./tslint.json -p ./tsconfig.json -t stylish",
     "test:js": "jest --detectOpenHandles",
-    "test": "yarn run lint:js && yarn run test:js",
+    "test": "yarn run build && yarn run lint:js && yarn run test:js",
     "build": "./node_modules/.bin/tsc",
     "prepare": "yarn run build",
     "prepublishOnly": "yarn run test",
-    "preversion": "yarn run lint:js"
+    "preversion": "yarn run lint:js",
+    "clean": "rm -r dist/"
   },
   "dependencies": {
     "lodash": "^4.17.11",
@@ -45,6 +46,6 @@
     "contracts"
   ],
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ]
 }

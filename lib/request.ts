@@ -136,7 +136,7 @@ const request = (verb: string, url: string, adapter: Adapter, requestParameters:
   return requestPromise;
 };
 
-const prepareRequest = (verb: string, urlContract: UrlContract, requestParameters?: RequestParameters): Promise<any> => {
+export default (verb: string, urlContract: UrlContract, requestParameters?: RequestParameters): Promise<any> => {
   if (!verb || typeof verb !== 'string') {
     throw new Error(`${LOG_ERROR_PREFIX} HTTP method is incorrect, got ${typeof verb}`);
   }
@@ -162,5 +162,3 @@ const prepareRequest = (verb: string, urlContract: UrlContract, requestParameter
 export const createRequestResponse = (response: object = {}): RequestResponse => {
   return response as $RequestResponse;
 };
-
-export default prepareRequest;
