@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
+    "allowUnreachableCode": false,
     "outDir": "./dist",
     "baseUrl": "./",
     "target": "ES5",
     "allowJs": false,
-    "module": "ES6",
+    "module": "CommonJS",
     "moduleResolution": "Node",
     "noEmitOnError": true,
     "esModuleInterop": true,
@@ -20,13 +21,6 @@
     "noImplicitThis": true,
     "experimentalDecorators": true,
     "resolveJsonModule": true,
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2017",
-      "esnext.asynciterable",
-      "scripthost"
-    ],
     "types": [
       "jest",
       "node",
