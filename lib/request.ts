@@ -25,7 +25,7 @@ type $UrlContract = UrlContract & {
   adapter?: Adapter;
 };
 
-export const createUrlFromContract = (urlContract: object): UrlContract => {
+export const createUrlContract = (urlContract: object): UrlContract => {
   return urlContract as $UrlContract;
 };
 

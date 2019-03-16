@@ -1,5 +1,5 @@
 import { GlobalWithFetchMock } from 'jest-fetch-mock';
-import request, { createUrlFromContract } from './request';
+import request, { createUrlContract } from './request';
 import {
   parametize,
   parametizeQuery,
@@ -23,7 +23,7 @@ describe('request', () => {
         },
       },
     );
-    const contract = createUrlFromContract({
+    const contract = createUrlContract({
       url: 'https://httpbin.org/get',
       adapter: (response: any) => {
         return {
