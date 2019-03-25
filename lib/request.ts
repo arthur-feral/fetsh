@@ -103,7 +103,10 @@ const request = (verb: string, url: string, adapter: Adapter, requestParameters:
     if (
       response.headers
       && response.headers.get('Content-Type')
-      && [CONTENT_JSON, CONTENT_JSONAPI].includes(response.headers.get('Content-Type'))
+      && (
+        response.headers.get('Content-Type').indexOf(CONTENT_JSON) > -1 ||
+        response.headers.get('Content-Type').indexOf(CONTENT_JSONAPI) > -1
+      )
     ) {
       return response.json().then(buildResult);
     }
