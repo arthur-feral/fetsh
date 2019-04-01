@@ -23,6 +23,7 @@ type $RequestResponse = RequestResponse & {
 type $UrlContract = UrlContract & {
   url: string;
   adapter?: Adapter;
+  contentType?: string;
 };
 
 export const createUrlContract = (urlContract: object): UrlContract => {
@@ -41,7 +42,13 @@ const getAdapterFromContract = (urlContract: UrlContract | string): Adapter => {
   return contract.adapter || (response => response) as Adapter;
 };
 
-const request = (verb: string, url: string, adapter: Adapter, requestParameters: RequestParameters): Promise<any> => {
+const getContentTypeFromContract = (urlContract: UrlContract | string): string | undefined => {
+  const contract = urlContract as $UrlContract;
+
+  return contract.contentType;
+};
+
+const request = (verb: string, urlContract: UrlContract, requestParameters: RequestParameters): Promise<any> => {
   const method = verb.toUpperCase();
   // const abortAvailable = window.AbortController !== undefined;
   // let abortController;
@@ -51,6 +58,10 @@ const request = (verb: string, url: string, adapter: Adapter, requestParameters:
   //   abortController = new window.AbortController();
   //   signal = abortController.signal;
   // }
+  const urlRaw = getUrlFromContract(urlContract);
+  const adapter = getAdapterFromContract(urlContract);
+  const contentTypeDefinedInContract = getContentTypeFromContract(urlContract);
+  const url = urlFormater(urlRaw, requestParameters);
 
   const fetchParameters = getFetchParameters(requestParameters);
   const customHeaders = get(fetchParameters, 'headers', {});
@@ -58,7 +69,9 @@ const request = (verb: string, url: string, adapter: Adapter, requestParameters:
   const useCredentials = get(fetchParameters, 'useCredentials', false);
   const headers = {
     ...customHeaders,
-    'Content-Type': get(fetchParameters, 'contentType', CONTENT_JSON),
+    'Content-Type': contentTypeDefinedInContract ?
+      contentTypeDefinedInContract
+      : get(customHeaders, 'Content-Type', CONTENT_JSON),
   };
 
   let options: any = {
@@ -155,11 +168,8 @@ export default (verb: string, urlContract: UrlContract, requestParameters?: Requ
   const parameters = requestParameters ?
     requestParameters :
     getDefaultRequestParameters();
-  const urlRaw = getUrlFromContract(urlContract);
-  const adapter = getAdapterFromContract(urlContract);
-  const url = urlFormater(urlRaw, parameters);
 
-  return request(verb, url, adapter, parameters);
+  return request(verb, urlContract, parameters);
 };
 
 export const createRequestResponse = (response: object = {}): RequestResponse => {
