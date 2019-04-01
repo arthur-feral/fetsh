@@ -18,3 +18,7 @@ export const CONTENT_JSON = 'application/json';
 export const CONTENT_JSONAPI = 'application/vnd.api+json';
 export const LOG_INFO_PREFIX = '[fetsh][Info]';
 export const LOG_ERROR_PREFIX = '[fetsh][Error]';
+export const HEADERS = {
+  JSON: CONTENT_JSON,
+  JSONAPI: CONTENT_JSONAPI,
+};
