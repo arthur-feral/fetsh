@@ -95,8 +95,7 @@ get(GET_MOVIES_FROM_LEGACY_API).then((movies: any[]) => {
 
 By simply doing this, you can deal with many different REST API endpoints that may return data with different shape,
 by establish a contract in your routing file. 
-This way, all your API call are defined in a single file. It is more readable and conveninet for the developers and you can easily see how the data is transformed.
----
+This way, all your API call are defined in a single file. It is more readable and convenient for the developers and you can easily see how the data is transformed.
 
 ### How to use
 For all available http methods you will have to provide an UrlContract. You can also provide parameters depending on the need.
