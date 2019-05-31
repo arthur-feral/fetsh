@@ -1,6 +1,6 @@
 {
   "name": "fetsh",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Fetsh helps you to establish contracts between your complex web app and all the different API it requires.",
   "repository": "https://www.github.com/arthur-feral/fetsh",
   "author": "Arthur feral (arthur.feral@hotmail.fr)",
