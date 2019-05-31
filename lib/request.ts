@@ -1,4 +1,5 @@
 import 'whatwg-fetch';
+import queryString from 'query-string';
 import get from 'lodash/get';
 import urlFormater from './urlFormater';
 import {
@@ -6,6 +7,7 @@ import {
   CONTENT_JSON,
   CONTENT_JSONAPI,
   VERBS,
+  CONTENT_FORM_URL_ENCODED,
 } from './constants';
 import { getErrorWithStatus } from './errors';
 import {
@@ -67,11 +69,13 @@ const request = (verb: string, urlContract: UrlContract, requestParameters: Requ
   const customHeaders = get(fetchParameters, 'headers', {});
   const isCrossDomain = get(fetchParameters, 'isCrossDomain', false);
   const useCredentials = get(fetchParameters, 'useCredentials', false);
+  const isPost = ['GET', 'DELETE'].indexOf(method) === -1;
+  const defaultContentType = isPost ? CONTENT_FORM_URL_ENCODED : CONTENT_JSON;
   const headers = {
     ...customHeaders,
     'Content-Type': contentTypeDefinedInContract ?
       contentTypeDefinedInContract
-      : get(customHeaders, 'Content-Type', CONTENT_JSON),
+      : get(customHeaders, 'Content-Type', defaultContentType),
   };
 
   let options: any = {
@@ -99,7 +103,7 @@ const request = (verb: string, urlContract: UrlContract, requestParameters: Requ
 
   if (['GET', 'DELETE'].indexOf(method) === -1) {
     const body = get(requestParameters, 'body', {});
-    options.body = JSON.stringify(body);
+    options.body = queryString.stringify(body);
   }
 
   options = Object.assign(
