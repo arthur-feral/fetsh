@@ -14,9 +14,9 @@ export const VERBS = [
   'put',
   'delete',
 ];
-export const CONTENT_JSON = 'application/json;charset=UTF-8';
+export const CONTENT_JSON = 'application/json';
 export const CONTENT_JSONAPI = 'application/vnd.api+json';
-export const CONTENT_FORM_URL_ENCODED = 'application/x-www-form-urlencoded;charset=UTF-8';
+export const CONTENT_FORM_URL_ENCODED = 'application/x-www-form-urlencoded';
 export const LOG_INFO_PREFIX = '[fetsh][Info]';
 export const LOG_ERROR_PREFIX = '[fetsh][Error]';
 export const HEADERS = {
